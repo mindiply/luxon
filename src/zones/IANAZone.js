@@ -36,6 +36,56 @@ function hackyOffset(dtf, date) {
   return [fYear, fMonth, fDay, fHour, fMinute, fSecond];
 }
 
+function parse2DigPosInt(str) {
+  const l = str.length;
+  let val = 0;
+  for (let i = l - 1, d = 1; i >= 0; i--, d++) {
+    val +=
+      d === 1
+        ? str[i] === "1"
+          ? 1
+          : str[i] === "2"
+            ? 2
+            : str[i] === "3"
+              ? 3
+              : str[i] === "4"
+                ? 4
+                : str[i] === "5"
+                  ? 5
+                  : str[i] === "6"
+                    ? 6
+                    : str[i] === "7"
+                      ? 7
+                      : str[i] === "8"
+                        ? 8
+                        : str[i] === "9"
+                          ? 9
+                          : 0
+        : d === 2
+          ? str[i] === "1"
+            ? 10
+            : str[i] === "2"
+              ? 20
+              : str[i] === "3"
+                ? 30
+                : str[i] === "4"
+                  ? 40
+                  : str[i] === "5"
+                    ? 50
+                    : str[i] === "6"
+                      ? 60
+                      : str[i] === "7"
+                        ? 70
+                        : str[i] === "8"
+                          ? 80
+                          : str[i] === "9"
+                            ? 90
+                            : 0
+          : 0;
+  }
+  return val;
+}
+
 function partsOffset(dtf, date) {
   const formatted = dtf.formatToParts(date),
     filled = [];
@@ -44,7 +94,7 @@ function partsOffset(dtf, date) {
       pos = typeToPos[type];
 
     if (!isUndefined(pos)) {
-      filled[pos] = parseInt(value, 10);
+      filled[pos] = type === "year" ? parseInt(value, 10) : parse2DigPosInt(value);
     }
   }
   return filled;
